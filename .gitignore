@@ -1,0 +1,11 @@
+.idea/**
+/microsec-order-service/test/*
+/microsec-admin-portal/test/*
+/microsec-menu-service/test/*
+/microsec-customer-portal/test/*
+/microsec-common/test/*
+/microsec-test/test/*
+/microsec-zipkin-server/test/*
+/microsec-custom-registry/test/*
+/microsec-hystrix-dashboard/test/*
+/microsec-eureka-server/test/*

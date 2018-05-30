@@ -1,0 +1,28 @@
+spring:
+  profiles.active: cloud
+server:
+  port: ${PORT:0}
+security:
+  basic:
+    enabled: false
+management:
+  context-path: /manage
+  security:
+    enabled: false
+
+endpoints:
+  env:
+    keys-to-sanitize: pwd,uid,password,secret,key,client_id,client_key # suffix or regex
+
+---
+spring:
+  profiles: cloud # For deployment in Cloud Foundry
+  datasource.platform: mysql
+  cloud:
+    services:
+      registrationMethod: route
+producer:
+  ribbon:
+    ServerListRefreshInterval: 5000
+ribbon:
+  IsSecure: true

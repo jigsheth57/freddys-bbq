@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: menu-service
+  cloud:
+    config:
+      uri: ${vcap.services.config-server.credentials.uri:http://configserver:8888}
+      discovery:
+        enabled: false
+      failFast: true
+  config:
+    retry:
+      initialInterval: 10000
+      maxInterval: 20000
+      maxAttempts: 10
+      
+encrypt:
+  failOnError: false

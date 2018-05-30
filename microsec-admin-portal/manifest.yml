@@ -1,0 +1,26 @@
+---
+defaults: &defaults
+  buildpack: java_buildpack_offline
+  memory: 1G
+  env:
+    TRUST_CERTS: api.sys.gcp.pcfapps.org
+    SSO_IDENTITY_PROVIDERS: uaa
+
+fd_service: &fd_service
+  env:
+    GRANT_TYPE: authorization_code
+    SSO_SCOPES: openid,menu.read,menu.write,order.admin,order.me
+    SSO_AUTO_APPROVED_SCOPES: openid,menu.read,menu.write,order.admin,order.me
+    SSO_SHOW_ON_HOME_PAGE: true
+  services:
+  - sso
+  - service-registry
+  - config-server
+  - config-event-bus
+  - circuit-breaker
+
+applications:
+  - name: admin-portal
+    path: target/microsec-admin-portal.jar
+    <<: *defaults
+    <<: *fd_service
