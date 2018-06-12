@@ -3,8 +3,8 @@
 # vars to define
 export UAA_ENDPOINT=uaa.sys.gcp.pcfapps.org
 export ADMIN_CLIENT_ID=admin
-export ADMIN_CLIENT_SECRET=idIOgM3L2UpOjnhlvNJdnIjjgsc_q_tm
-export IDENTITY_ZONE_ID=6e546afc-48d0-4639-a10e-b2906a887d88
+export ADMIN_CLIENT_SECRET=pVlMefmaIDHKxzn0F5Z4q0n_w-OFsxSF
+export IDENTITY_ZONE_ID=16d9f451-954c-4c47-86b4-840ddcb1e190
 export ZONEADMIN_CLIENT_ID=bbqadmin
-export ZONEADMIN_CLIENT_SECRET=idIOgM3L2UpOjnhlvNJdnIjjgsc_q_tm
+export ZONEADMIN_CLIENT_SECRET=pVlMefmaIDHKxzn0F5Z4q0n_w-OFsxSF
 export ZONE_ENDPOINT=auth.login.sys.gcp.pcfapps.org

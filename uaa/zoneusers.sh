@@ -20,5 +20,4 @@ uaac member add menu.read frank
 uaac member add menu.read freddy
 uaac member add menu.write freddy
 uaac member add order.admin freddy
-uaac member add actuator.read freddy
 uaac member add order.me frank

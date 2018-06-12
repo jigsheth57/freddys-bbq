@@ -1,17 +1,12 @@
 ---
-defaults: &defaults
+bck_service: &bck_service
   buildpack: java_buildpack_offline
   memory: 1G
   env:
     TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
-    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.config-event-bus.credentials.uri}
-    DEBUG: "true"
-
-bck_service: &bck_service
-  #no-route: true
-  env:
+    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
     STORE_PASS: changeme
     SSO_RESOURCES: |
@@ -22,7 +17,13 @@ bck_service: &bck_service
     SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me
 
 fd_service: &fd_service
+  buildpack: java_buildpack_offline
+  memory: 1G
   env:
+    TRUST_CERTS: api.sys.gcp.pcfapps.org
+    SSO_IDENTITY_PROVIDERS: uaa
+    SPRING_PROFILES_ACTIVE: cloud
+    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: authorization_code
     SSO_SCOPES: openid,menu.read,menu.write,order.admin,order.me
     SSO_AUTO_APPROVED_SCOPES: openid,menu.read,order.me
@@ -31,70 +32,38 @@ fd_service: &fd_service
   - sso
   - service-registry
   - config-server
-  - config-event-bus
+  - event-bus
   - circuit-breaker
 
 applications:
-  - name: zipkin
-    path: ./zipkin-server-2.7.1-exec.jar
-    buildpack: java_buildpack_offline
-    instances: 1
-    memory: 1G
-    env:
-      SPRING_PROFILES_ACTIVE: cloud
-      JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-      TRUST_CERTS: api.sys.gcp.pcfapps.org
-      DEBUG: "true"
-      RABBIT_URI: ${vcap.services.config-event-bus.credentials.uri}
-      RABBIT_HOST: ${vcap.services.config-event-bus.credentials.host}
-      RABBIT_VIRTUAL_HOST: ${vcap.services.config-event-bus.credentials.vhost}
-      RABBIT_USER: ${vcap.services.config-event-bus.credentials.username}
-      RABBIT_PASSWORD: ${vcap.services.config-event-bus.credentials.password}
-      RABBIT_USE_SSL: false
-      HTTP_COLLECTOR_ENABLED: false
-      STORAGE_TYPE: mysql
-      MYSQL_HOST: ${vcap.services.mysql.credentials.hostname}
-      MYSQL_USER: ${vcap.services.mysql.credentials.username}
-      MYSQL_PASS: ${vcap.services.mysql.credentials.password}
-      MYSQL_DB: ${vcap.services.mysql.credentials.name}
-    services:
-    - config-event-bus
-    - zipkin-db
-
   - name: menu-service
     path: microsec-menu-service/target/microsec-menu-service-exec.jar
     routes:
     - route: menu-service.apps.internal
-    - route: menu-service.cfapps.gcp.pcfapps.org
-    <<: *defaults
     <<: *bck_service
     services:
     - sso
     - service-registry
     - config-server
-    - config-event-bus
-    - menu-service-db
+    - event-bus
+    - bckservice-db
 
   - name: order-service
     path: microsec-order-service/target/microsec-order-service-exec.jar
     routes:
     - route: order-service.apps.internal
-    - route: order-service.cfapps.gcp.pcfapps.org
-    <<: *defaults
     <<: *bck_service
     services:
     - sso
     - service-registry
     - config-server
-    - config-event-bus
-    - order-service-db
+    - event-bus
+    - bckservice-db
 
   - name: customer-portal
     path: microsec-customer-portal/target/microsec-customer-portal.jar
-    <<: *defaults
     <<: *fd_service
 
   - name: admin-portal
     path: microsec-admin-portal/target/microsec-admin-portal.jar
-    <<: *defaults
     <<: *fd_service
