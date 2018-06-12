@@ -43,10 +43,3 @@ cf add-network-policy admin-portal --destination-app order-service --protocol tc
 cf add-network-policy customer-portal --destination-app menu-service --protocol tcp --port 8443
 cf add-network-policy customer-portal --destination-app order-service --protocol tcp --port 8443
 cf add-network-policy order-service --destination-app menu-service --protocol tcp --port 8443
-
-#cat mysql.sql | cf mysql zipkin-db
-#cf restart zipkin
-#cf unmap-route order-service cfapps.gcp.pcfapps.org --hostname order-service
-#cf unmap-route menu-service cfapps.gcp.pcfapps.org --hostname menu-service
-#echo y| cf delete-route cfapps.gcp.pcfapps.org --hostname order-service -f
-#echo y| cf delete-route cfapps.gcp.pcfapps.org --hostname menu-service -f

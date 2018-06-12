@@ -15,6 +15,12 @@ bck_service: &bck_service
       order.admin: order admin access
       order.me: order read access to your order
     SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me
+  services:
+  - sso
+  - service-registry
+  - config-server
+  - event-bus
+  - bckservice-db
 
 fd_service: &fd_service
   buildpack: java_buildpack_offline
@@ -41,24 +47,12 @@ applications:
     routes:
     - route: menu-service.apps.internal
     <<: *bck_service
-    services:
-    - sso
-    - service-registry
-    - config-server
-    - event-bus
-    - bckservice-db
 
   - name: order-service
     path: microsec-order-service/target/microsec-order-service-exec.jar
     routes:
     - route: order-service.apps.internal
     <<: *bck_service
-    services:
-    - sso
-    - service-registry
-    - config-server
-    - event-bus
-    - bckservice-db
 
   - name: customer-portal
     path: microsec-customer-portal/target/microsec-customer-portal.jar
