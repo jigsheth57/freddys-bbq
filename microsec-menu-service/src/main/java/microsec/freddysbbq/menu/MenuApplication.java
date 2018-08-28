@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -21,21 +20,16 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @SpringBootApplication
 @EntityScan(basePackageClasses = MenuItem.class)
 @EnableResourceServer
 @EnableDiscoveryClient
-@EnableAutoConfiguration
 public class MenuApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(MenuApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static void main(String[] args) {
         SpringApplication.run(MenuApplication.class, args);
@@ -74,15 +68,15 @@ public class MenuApplication {
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
-                logger.info("securityProperties.isRequireSsl(): "+securityProperties.isRequireSsl());
-                if (securityProperties.isRequireSsl()) {
-                    http.requiresChannel().anyRequest().requiresSecure();
-                }
+//                logger.debug("securityProperties.isRequireSsl(): "+securityProperties.isRequireSsl());
+//                if (securityProperties.isRequireSsl()) {
+//                    http.requiresChannel().anyRequest().requiresSecure();
+//                }
                 http
-                        .addFilterBefore(new LogFilter(), X509AuthenticationFilter.class)
-                        .x509()
-                        .subjectPrincipalRegex("CN=(.*?),")
-                        .and()
+//                        .addFilterBefore(new LogFilter(), X509AuthenticationFilter.class)
+//                        .x509()
+//                        .subjectPrincipalRegex("CN=(.*?),")
+//                        .and()
                         .authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('menu.read')")
                         .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('menu.write')")
@@ -92,26 +86,26 @@ public class MenuApplication {
         };
     }
 
-    static {
-        System.setProperty("javax.net.debug", "ssl");
-    }
-    static class LogFilter implements Filter {
-
-        @Override
-        public void init(FilterConfig filterConfig) {
-
-        }
-
-        @Override
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-            HttpServletRequest request =  (HttpServletRequest)servletRequest;
-            logger.info("X-Forward-Client-Cert: " + request.getHeader("X-Forwarded-Client-Cert"));
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
-
-        @Override
-        public void destroy() {
-
-        }
-    }
+//    static {
+//        System.setProperty("javax.net.debug", "ssl");
+//    }
+//    static class LogFilter implements Filter {
+//
+//        @Override
+//        public void init(FilterConfig filterConfig) {
+//
+//        }
+//
+//        @Override
+//        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+//            HttpServletRequest request =  (HttpServletRequest)servletRequest;
+//            logger.debug("X-Forward-Client-Cert: " + request.getHeader("X-Forwarded-Client-Cert"));
+//            filterChain.doFilter(servletRequest, servletResponse);
+//        }
+//
+//        @Override
+//        public void destroy() {
+//
+//        }
+//    }
 }

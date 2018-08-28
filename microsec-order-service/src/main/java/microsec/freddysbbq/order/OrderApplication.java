@@ -5,7 +5,6 @@ import microsec.freddysbbq.order.model.v1.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -26,10 +25,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EntityScan(basePackageClasses = Order.class)
 @EnableResourceServer
 @EnableDiscoveryClient
-@EnableAutoConfiguration
 public class OrderApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static void main(String[] args) {
         SpringApplication.run(OrderApplication.class, args);
@@ -53,14 +51,14 @@ public class OrderApplication {
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
-                logger.info("securityProperties.isRequireSsl(): "+securityProperties.isRequireSsl());
-                if (securityProperties.isRequireSsl()) {
-                    http.requiresChannel().anyRequest().requiresSecure();
-                }
+//                logger.info("securityProperties.isRequireSsl(): "+securityProperties.isRequireSsl());
+//                if (securityProperties.isRequireSsl()) {
+//                    http.requiresChannel().anyRequest().requiresSecure();
+//                }
                 http
-                        .x509()
-                        .subjectPrincipalRegex("CN=(.*?),")
-                        .and()
+//                        .x509()
+//                        .subjectPrincipalRegex("CN=(.*?),")
+//                        .and()
                         .authorizeRequests()
                         .antMatchers("/orders/**").access("#oauth2.hasScope('order.admin')")
                         .antMatchers("/myorders").access("#oauth2.hasScope('order.me')");

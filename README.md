@@ -4,7 +4,7 @@
 
 This demo is an example of using Pivotal SSO and Spring Cloud Services in a microservice architecture.
 
-![diagram](docs/diagram.gif "Diagram")
+![diagram](docs/diagram.png "Diagram")
 
 Here are the actors:
 - Freddy, owner of Freddy’s BBQ Joint, the best ribs in DC
@@ -23,24 +23,21 @@ In order to deploy Freddy's BBQ microservices to Cloud Foundry you must have Adm
 
 1. Install dependent Services
 2. Create service instances for microservices to bind to
-3. Set CF_TARGET for all applications (NOTE: Only if TLS is self-signed cert)
-4. Deploy applications to Cloud Foundry
-5. Setup authorization scopes and users (Freddy & Frank)
-6. Add authorization scopes to microservices in SSO management dashboard
-7. Verify application works
+3. Deploy applications to Cloud Foundry
+4. Setup authorization scopes and users (Freddy & Frank)
+5. Add authorization scopes to microservices in SSO management dashboard
+6. Verify application works
 
 ### Install Dependent Services
 
 Freddy's BBQ requires the installation of the following Pivotal Cloud Foundry products:
 
-* [SSO for PCF](https://network.pivotal.io/products/p-identity)
-* [MySQL for PCF](https://network.pivotal.io/products/p-mysql)
-* [RabbitMQ for PCF](https://network.pivotal.io/products/pivotal-rabbitmq-service)
-* [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services)
+* [SSO for PCF](https://network.pivotal.io/products/pivotal_single_sign-on_service)
+* [MySQL for PCF](https://network.pivotal.io/products/pivotal-mysql/)
+* [RabbitMQ for PCF](https://network.pivotal.io/products/p-rabbitmq)
+* [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services/)
 
-Follow these instructions on [how to add products to PCF Ops Manager](http://docs.pivotal.io/pivotalcf/1-8/customizing/add-delete.html).
-
-It is important to note that installation of the [SSO for PCF](https://network.pivotal.io/products/p-identity) is not sufficient to enable creation of service instances that applications can bind to. In order to create a service in the Cloud Foundry marketplace you must create a new service plan. Please the directions in the [SSO for PCF docs](http://docs.pivotal.io/p-identity/1-8/getting-started.html) to create a new service plan. The rest of this page assumes the `Auth Domain` for your SSO serice plan is `auth`.
+It is important to note that installation of the [SSO for PCF](https://network.pivotal.io/products/pivotal_single_sign-on_service) is not sufficient to enable creation of service instances that applications can bind to. In order to create a service in the Cloud Foundry marketplace you must create a new service plan. Please the directions in the [SSO for PCF docs](https://docs.pivotal.io/p-identity/1-7/getting-started.html) to create a new service plan. The rest of this page assumes the `Auth Domain` for your SSO serice plan is `auth`.
 
 After installing these products and setting up an SSO provider, you can verify that they are available for creating service instances by running `cf marketplace` in a terminal. You should see the following services available in the PCF marketplace:
 
@@ -86,13 +83,6 @@ service-registry  p-service-registry            standard   create succeeded
 sso               p-identity                    auth       create succeeded
 ```
 
-### Set CF_TARGET
-
-If your PCF environment is deployed with self-signed certificates to enable TLS for application domains then you must set CF_TARGET to the API endpoint for PCF. Run the following command as a Cloud Foundry Administrator to set CF_TARGET to the API endpoint for all applications deployed into PCF environment:
-
-```
-cf srevg '{"CF_TARGET":"https://api.mypcf.example.com"}'
-```
 ### Deploy Applications
 
 The file `manifest.yml` contains the configuration for all of the application instances to be deployed for Freddy's BBQ. In order to deploy the applications to PCF run the following command from the folder containing `manifest.yml`:

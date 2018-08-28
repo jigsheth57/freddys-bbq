@@ -46,7 +46,7 @@ public class CustomerOrderController {
     @Autowired
     private ResourceServerProperties resourceServerProperties;
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomerOrderController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PreAuthorize("#oauth2.hasScope('order.me')")
     @RequestMapping("/myorders")

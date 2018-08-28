@@ -5,10 +5,11 @@ import microsec.common.Branding;
 import microsec.common.DumpTokenEndpointConfig;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import microsec.freddysbbq.order.model.v1.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -41,9 +42,10 @@ import java.security.Principal;
 @EnableOAuth2Sso
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-@EnableAutoConfiguration
 @Import(DumpTokenEndpointConfig.class)
 public class AdminApplication extends WebSecurityConfigurerAdapter {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static void main(String[] args) {
         SpringApplication.run(AdminApplication.class, args);

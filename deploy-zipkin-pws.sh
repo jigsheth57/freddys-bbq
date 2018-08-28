@@ -3,8 +3,8 @@
 cf t
 echo -n "Validate the space & org, you are currently logged in before continuing!"
 read
-cf cs p-rabbitmq standard event-bus
-cf cs p.mysql db-small zipkin-db
+cf cs cloudamqp lemur event-bus
+cf cs p-mysql 100mb zipkin-db
 echo "Checking status of the Service Instances!"
 until [ `cf service zipkin-db | grep -c "succeeded"` -eq 1  ]
 do

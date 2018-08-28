@@ -3,24 +3,21 @@ defaults: &defaults
   buildpack: java_buildpack_offline
   memory: 1G
   env:
-    TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
-
-fd_service: &fd_service
-  env:
+    SPRING_PROFILES_ACTIVE: cloud
+    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: authorization_code
-    SSO_SCOPES: openid,menu.read,menu.write,order.admin,order.me
-    SSO_AUTO_APPROVED_SCOPES: openid,menu.read,order.me
+    SSO_SCOPES: openid,user_attributes,roles,uaa.resource,menu.read,menu.write,order.admin,order.me
+    SSO_AUTO_APPROVED_SCOPES: openid,user_attributes,roles,menu.read,menu.write,order.me,order.admin
     SSO_SHOW_ON_HOME_PAGE: true
   services:
   - sso
   - service-registry
   - config-server
-  - config-event-bus
+  - event-bus
   - circuit-breaker
 
 applications:
-  - name: customer-portal
+  - name: customer-portal-bbq
     path: target/microsec-customer-portal.jar
     <<: *defaults
-    <<: *fd_service

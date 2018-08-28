@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mvn clean install package -DskipTests=true
+# mvn clean install package -DskipTests=true
 cf t
 echo -n "Validate the space & org, you are currently logged in before continuing!"
 read
@@ -38,8 +38,4 @@ echo "Service instances created. Pushing all required applications."
 
 cf p
 
-cf add-network-policy admin-portal --destination-app menu-service --protocol tcp --port 8443
-cf add-network-policy admin-portal --destination-app order-service --protocol tcp --port 8443
-cf add-network-policy customer-portal --destination-app menu-service --protocol tcp --port 8443
-cf add-network-policy customer-portal --destination-app order-service --protocol tcp --port 8443
-cf add-network-policy order-service --destination-app menu-service --protocol tcp --port 8443
+( exec "./network-policies.sh" )

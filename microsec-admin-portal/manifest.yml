@@ -5,9 +5,7 @@ defaults: &defaults
   env:
     TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
-
-fd_service: &fd_service
-  env:
+    SPRING_PROFILES_ACTIVE: cloud
     GRANT_TYPE: authorization_code
     SSO_SCOPES: openid,menu.read,menu.write,order.admin,order.me
     SSO_AUTO_APPROVED_SCOPES: openid,menu.read,menu.write,order.admin,order.me
@@ -16,11 +14,10 @@ fd_service: &fd_service
   - sso
   - service-registry
   - config-server
-  - config-event-bus
+  - event-bus
   - circuit-breaker
 
 applications:
   - name: admin-portal
     path: target/microsec-admin-portal.jar
     <<: *defaults
-    <<: *fd_service

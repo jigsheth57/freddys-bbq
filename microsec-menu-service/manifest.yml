@@ -6,27 +6,23 @@ defaults: &defaults
     TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
-
-bck_service: &bck_service
-  env:
     GRANT_TYPE: client_credentials
-    STORE_PASS: changeme
     SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write
     SSO_RESOURCES: |
       menu.read:  menu read access
       menu.write: menu write access
-    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.config-event-bus.credentials.uri}
+    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     DEBUG: "true"
+  no-route: true
   services:
   - sso
   - service-registry
   - config-server
-  - config-event-bus
-  - mysql
+  - event-bus
+  - bckservice-db
 
 applications:
   - name: menu-service
     instances: 1
-    path: target/microsec-menu-service-exec.jar
+    path: target/microsec-menu-service.jar
     <<: *defaults
-    <<: *bck_service

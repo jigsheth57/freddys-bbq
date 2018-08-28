@@ -1,8 +1,7 @@
 ---
 applications:
-  - name: zipkin
+  - name: zipkin-bbq
     path: ./zipkin-server-2.7.1-exec.jar
-    buildpack: java_buildpack_offline
     instances: 1
     memory: 1G
     env:

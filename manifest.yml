@@ -1,14 +1,13 @@
 ---
 bck_service: &bck_service
-  buildpack: java_buildpack_offline
   memory: 1G
+  buildpack: java_buildpack_offline
+  no-route: true
   env:
-    TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
-    STORE_PASS: changeme
     SSO_RESOURCES: |
       menu.read:  menu read access
       menu.write: menu write access
@@ -23,16 +22,15 @@ bck_service: &bck_service
   - bckservice-db
 
 fd_service: &fd_service
-  buildpack: java_buildpack_offline
   memory: 1G
+  buildpack: java_buildpack_offline
   env:
-    TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: authorization_code
-    SSO_SCOPES: openid,menu.read,menu.write,order.admin,order.me
-    SSO_AUTO_APPROVED_SCOPES: openid,menu.read,order.me
+    SSO_SCOPES: openid,user_attributes,roles,uaa.resource,menu.read,menu.write,order.admin,order.me
+    SSO_AUTO_APPROVED_SCOPES: openid,user_attributes,roles,menu.read,menu.write,order.me,order.admin
     SSO_SHOW_ON_HOME_PAGE: true
   services:
   - sso
@@ -42,22 +40,18 @@ fd_service: &fd_service
   - circuit-breaker
 
 applications:
-  - name: menu-service
-    path: microsec-menu-service/target/microsec-menu-service-exec.jar
-    routes:
-    - route: menu-service.apps.internal
+  - name: menu-service-bbq
+    path: microsec-menu-service/target/microsec-menu-service.jar
     <<: *bck_service
 
-  - name: order-service
-    path: microsec-order-service/target/microsec-order-service-exec.jar
-    routes:
-    - route: order-service.apps.internal
+  - name: order-service-bbq
+    path: microsec-order-service/target/microsec-order-service.jar
     <<: *bck_service
 
-  - name: customer-portal
+  - name: customer-portal-bbq
     path: microsec-customer-portal/target/microsec-customer-portal.jar
     <<: *fd_service
 
-  - name: admin-portal
+  - name: admin-portal-bbq
     path: microsec-admin-portal/target/microsec-admin-portal.jar
     <<: *fd_service

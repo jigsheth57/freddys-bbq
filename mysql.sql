@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS zipkin_spans;
 CREATE TABLE IF NOT EXISTS zipkin_spans (
   `trace_id_high` BIGINT NOT NULL DEFAULT 0 COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
   `trace_id` BIGINT NOT NULL,
@@ -15,6 +16,7 @@ ALTER TABLE zipkin_spans ADD INDEX(`trace_id_high`, `trace_id`) COMMENT 'for get
 ALTER TABLE zipkin_spans ADD INDEX(`name`) COMMENT 'for getTraces and getSpanNames';
 ALTER TABLE zipkin_spans ADD INDEX(`start_ts`) COMMENT 'for getTraces ordering and range';
 
+DROP TABLE IF EXISTS zipkin_annotations;
 CREATE TABLE IF NOT EXISTS zipkin_annotations (
   `trace_id_high` BIGINT NOT NULL DEFAULT 0 COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
   `trace_id` BIGINT NOT NULL COMMENT 'coincides with zipkin_spans.trace_id',
@@ -37,6 +39,7 @@ ALTER TABLE zipkin_annotations ADD INDEX(`a_type`) COMMENT 'for getTraces';
 ALTER TABLE zipkin_annotations ADD INDEX(`a_key`) COMMENT 'for getTraces';
 ALTER TABLE zipkin_annotations ADD INDEX(`trace_id`, `span_id`, `a_key`) COMMENT 'for dependencies job';
 
+DROP TABLE IF EXISTS zipkin_dependencies;
 CREATE TABLE IF NOT EXISTS zipkin_dependencies (
   `day` DATE NOT NULL,
   `parent` VARCHAR(255) NOT NULL,
