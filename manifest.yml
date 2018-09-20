@@ -1,7 +1,8 @@
 ---
 bck_service: &bck_service
   memory: 1G
-  buildpack: java_buildpack_offline
+  buildpack: java_buildpack
+  health-check-type: port
   no-route: true
   env:
     SSO_IDENTITY_PROVIDERS: uaa
@@ -23,7 +24,8 @@ bck_service: &bck_service
 
 fd_service: &fd_service
   memory: 1G
-  buildpack: java_buildpack_offline
+  buildpack: java_buildpack
+  random-route: true
   env:
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud

@@ -1,20 +1,20 @@
 ---
 defaults: &defaults
-  buildpack: java_buildpack_offline
   memory: 1G
+  buildpack: java_buildpack
+  health-check-type: port
+  no-route: true
   env:
-    TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
+    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
-    SSO_AUTHORITIES: openid,uaa.resource,menu.read,order.admin,order.me
     SSO_RESOURCES: |
       menu.read:  menu read access
+      menu.write: menu write access
       order.admin: order admin access
       order.me: order read access to your order
-    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
-    DEBUG: "true"
-  no-route: true
+    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me
   services:
   - sso
   - service-registry
@@ -23,6 +23,6 @@ defaults: &defaults
   - bckservice-db
 
 applications:
-  - name: order-service
+  - name: order-service-bbq
     path: target/microsec-order-service.jar
     <<: *defaults
