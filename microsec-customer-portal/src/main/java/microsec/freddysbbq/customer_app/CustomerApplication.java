@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
-@SpringBootApplication
+@SpringBootApplication(exclude= {io.pivotal.spring.cloud.IssuerCheckConfiguration.class})
 @Controller
 @EnableOAuth2Sso
 @EnableDiscoveryClient
@@ -58,10 +58,6 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        if (securityProperties.isRequireSsl()) {
-            http.requiresChannel().anyRequest().requiresSecure();
-        }
-
         http.authorizeRequests().anyRequest().authenticated();
     }
 

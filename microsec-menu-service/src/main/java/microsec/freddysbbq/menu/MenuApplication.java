@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 
 import javax.annotation.PostConstruct;
 
-@SpringBootApplication
+@SpringBootApplication(exclude= {io.pivotal.spring.cloud.IssuerCheckConfiguration.class})
 @EntityScan(basePackageClasses = MenuItem.class)
 @EnableResourceServer
 @EnableDiscoveryClient
@@ -46,7 +46,7 @@ public class MenuApplication {
     @PostConstruct
     public void bootstrap() {
         if (menuRepository.count() == 0) {
-            menuRepository.save(menuBootstrap().getItems());
+            menuRepository.saveAll(menuBootstrap().getItems());
         }
     }
 
@@ -68,15 +68,7 @@ public class MenuApplication {
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
-//                logger.debug("securityProperties.isRequireSsl(): "+securityProperties.isRequireSsl());
-//                if (securityProperties.isRequireSsl()) {
-//                    http.requiresChannel().anyRequest().requiresSecure();
-//                }
                 http
-//                        .addFilterBefore(new LogFilter(), X509AuthenticationFilter.class)
-//                        .x509()
-//                        .subjectPrincipalRegex("CN=(.*?),")
-//                        .and()
                         .authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('menu.read')")
                         .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('menu.write')")
@@ -85,27 +77,4 @@ public class MenuApplication {
             }
         };
     }
-
-//    static {
-//        System.setProperty("javax.net.debug", "ssl");
-//    }
-//    static class LogFilter implements Filter {
-//
-//        @Override
-//        public void init(FilterConfig filterConfig) {
-//
-//        }
-//
-//        @Override
-//        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-//            HttpServletRequest request =  (HttpServletRequest)servletRequest;
-//            logger.debug("X-Forward-Client-Cert: " + request.getHeader("X-Forwarded-Client-Cert"));
-//            filterChain.doFilter(servletRequest, servletResponse);
-//        }
-//
-//        @Override
-//        public void destroy() {
-//
-//        }
-//    }
 }

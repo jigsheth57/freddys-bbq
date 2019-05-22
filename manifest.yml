@@ -1,7 +1,9 @@
 ---
 bck_service: &bck_service
+  stack: cflinuxfs3
   memory: 1G
-  buildpack: java_buildpack
+  buildpacks:
+    - java_buildpack_offline
   health-check-type: port
   no-route: true
   env:
@@ -9,11 +11,6 @@ bck_service: &bck_service
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
-    SSO_RESOURCES: |
-      menu.read:  menu read access
-      menu.write: menu write access
-      order.admin: order admin access
-      order.me: order read access to your order
     SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me
   services:
   - sso
@@ -23,8 +20,10 @@ bck_service: &bck_service
   - bckservice-db
 
 fd_service: &fd_service
+  stack: cflinuxfs3
   memory: 1G
-  buildpack: java_buildpack
+  buildpacks:
+    - java_buildpack_offline
   random-route: true
   env:
     SSO_IDENTITY_PROVIDERS: uaa

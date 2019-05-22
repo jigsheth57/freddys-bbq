@@ -1,10 +1,12 @@
 package microsec.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +19,13 @@ public class DumpTokenEndpointConfig {
         return new DumpTokenController();
     }
 
+    @EnableOAuth2Client
     @Controller
     @ConditionalOnBean(DumpTokenEndpointConfig.class)
     public static class DumpTokenController {
+
         @Autowired
+        @Qualifier("oauth2ClientContext")
         private OAuth2ClientContext oAuth2ClientContext;
 
         @RequestMapping("/dump_token")

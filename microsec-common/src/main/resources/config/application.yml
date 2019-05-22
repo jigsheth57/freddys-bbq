@@ -12,12 +12,14 @@
 branding:
   restaurantName: Freddy's BBQ Joint
   menuTitle: Freddy's Menu
-  
-menuBootstrap:
+
+menubootstrap:
   items:
-    - name: Full Rack of Ribs
+    -
+      name: Full Rack of Ribs
       price: 20
-    - name: 1/2 Rack
+    -
+      name: 1/2 Rack
       price: 12
   
 # run hystrix commands in the same thread 

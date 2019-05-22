@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 
-@SpringBootApplication
+@SpringBootApplication(exclude= {io.pivotal.spring.cloud.IssuerCheckConfiguration.class})
 @Controller
 @EnableOAuth2Sso
 @EnableDiscoveryClient
@@ -56,10 +56,6 @@ public class AdminApplication extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        if (securityProperties.isRequireSsl()) {
-            http.requiresChannel().anyRequest().requiresSecure();
-        }
-
         http.authorizeRequests()
                 .expressionHandler(new OAuth2WebSecurityExpressionHandler())
                 .anyRequest().access("#oauth2.hasScope('menu.write')");

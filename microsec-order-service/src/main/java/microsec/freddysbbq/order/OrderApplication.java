@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
-@SpringBootApplication
+@SpringBootApplication(exclude= {io.pivotal.spring.cloud.IssuerCheckConfiguration.class})
 @EntityScan(basePackageClasses = Order.class)
 @EnableResourceServer
 @EnableDiscoveryClient
@@ -51,14 +51,7 @@ public class OrderApplication {
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
-//                logger.info("securityProperties.isRequireSsl(): "+securityProperties.isRequireSsl());
-//                if (securityProperties.isRequireSsl()) {
-//                    http.requiresChannel().anyRequest().requiresSecure();
-//                }
                 http
-//                        .x509()
-//                        .subjectPrincipalRegex("CN=(.*?),")
-//                        .and()
                         .authorizeRequests()
                         .antMatchers("/orders/**").access("#oauth2.hasScope('order.admin')")
                         .antMatchers("/myorders").access("#oauth2.hasScope('order.me')");

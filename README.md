@@ -37,7 +37,7 @@ Freddy's BBQ requires the installation of the following Pivotal Cloud Foundry pr
 * [RabbitMQ for PCF](https://network.pivotal.io/products/p-rabbitmq)
 * [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services/)
 
-It is important to note that installation of the [SSO for PCF](https://network.pivotal.io/products/pivotal_single_sign-on_service) is not sufficient to enable creation of service instances that applications can bind to. In order to create a service in the Cloud Foundry marketplace you must create a new service plan. Please the directions in the [SSO for PCF docs](https://docs.pivotal.io/p-identity/1-7/getting-started.html) to create a new service plan. The rest of this page assumes the `Auth Domain` for your SSO serice plan is `auth`.
+It is important to note that installation of the [SSO for PCF](https://network.pivotal.io/products/pivotal_single_sign-on_service) is not sufficient to enable creation of service instances that applications can bind to. In order to create a service in the Cloud Foundry marketplace you must create a new service plan. Please the directions in the [SSO for PCF docs](https://docs.pivotal.io/p-identity/1-9/getting-started.html) to create a new service plan. The rest of this page assumes the `Auth Domain` for your SSO serice plan is `auth`.
 
 After installing these products and setting up an SSO provider, you can verify that they are available for creating service instances by running `cf marketplace` in a terminal. You should see the following services available in the PCF marketplace:
 
