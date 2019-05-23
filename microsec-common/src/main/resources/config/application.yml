@@ -19,7 +19,7 @@ menubootstrap:
       name: Full Rack of Ribs
       price: 20
     -
-      name: 1/2 Rack
+      name: 1/2 Rack of Ribs
       price: 12
   
 # run hystrix commands in the same thread 

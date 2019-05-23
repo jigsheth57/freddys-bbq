@@ -1,7 +1,9 @@
 package microsec.common;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+@Component
 @ConfigurationProperties("branding")
 public class Branding {
     private String restaurantName;

@@ -1,11 +1,15 @@
 ---
 applications:
   - name: zipkin-bbq
-    path: ./zipkin-server-2.7.1-exec.jar
+    path: ./zipkin-server-2.14.0-exec.jar
     instances: 1
+    stack: cflinuxfs3
     memory: 1G
+    buildpacks:
+      - java_buildpack_offline
     env:
       SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '[enabled: false]'
       JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
       RABBIT_URI: ${vcap.services.event-bus.credentials.uri}
       RABBIT_HOST: ${vcap.services.event-bus.credentials.host}
@@ -15,10 +19,10 @@ applications:
       RABBIT_USE_SSL: false
       HTTP_COLLECTOR_ENABLED: false
       STORAGE_TYPE: mysql
-      MYSQL_HOST: ${vcap.services.mysql.credentials.hostname}
-      MYSQL_USER: ${vcap.services.mysql.credentials.username}
-      MYSQL_PASS: ${vcap.services.mysql.credentials.password}
-      MYSQL_DB: ${vcap.services.mysql.credentials.name}
+      MYSQL_HOST: ${vcap.services.zipkin-db.credentials.hostname}
+      MYSQL_USER: ${vcap.services.zipkin-db.credentials.username}
+      MYSQL_PASS: ${vcap.services.zipkin-db.credentials.password}
+      MYSQL_DB: ${vcap.services.zipkin-db.credentials.name}
     services:
     - event-bus
     - zipkin-db

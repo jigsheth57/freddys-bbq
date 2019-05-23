@@ -62,7 +62,7 @@ public class CustomerOrderController {
         }
         UserInfo userInfo = tokenRelayingRestTemplate
                 .getForObject(resourceServerProperties.getUserInfoUri(), UserInfo.class);
-        logger.info("placeOrder: "+userInfo);
+        logger.debug("placeOrder: "+userInfo);
         Order order = new Order();
         order.setCustomerId(principal.getName());
         order.setEmail(userInfo.getEmail());

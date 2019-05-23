@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import microsec.common.Branding;
 import microsec.common.DumpTokenEndpointConfig;
-import microsec.common.MenuBootstrap;
+import microsec.common.Menubootstrap;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import microsec.freddysbbq.order.model.v1.Order;
 import org.slf4j.Logger;
@@ -71,8 +71,8 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public MenuBootstrap menuBootstrap() {
-        return new MenuBootstrap();
+    public Menubootstrap menubootstrap() {
+        return new Menubootstrap();
     }
 
     @LoadBalanced
@@ -84,7 +84,7 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private MenuBootstrap menuBootstrap;
+    private Menubootstrap menubootstrap;
 
     @RequestMapping("/")
     public String index(Model model, Principal principal) {
@@ -95,7 +95,7 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
     @HystrixCommand(fallbackMethod = "menuFallback",
             commandProperties = {
                     @HystrixProperty(name="execution.isolation.strategy", value="THREAD"),
-                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2500")
+                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="1500")
             })
     @RequestMapping("/menuItems")
     public String menu(Model model) {
@@ -112,7 +112,7 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
 
     public String menuFallback(Model model) {
         logger.debug("Retrieve static menu info");
-        model.addAttribute("menu", menuBootstrap.getItems());
+        model.addAttribute("menu", menubootstrap.getItems());
         model.addAttribute("menuServiceDown", true);
         return "menu";
     }
@@ -121,7 +121,7 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
     @HystrixCommand(fallbackMethod = "myOrdersFallback",
             commandProperties = {
                     @HystrixProperty(name="execution.isolation.strategy", value="THREAD"),
-                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2500")
+                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="1500")
             })
     public String myOrders(Model model) {
         logger.debug("Retrieve my order info from order-service");
@@ -146,7 +146,7 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
     @HystrixCommand(fallbackMethod = "placeOrderFallback",
             commandProperties = {
                     @HystrixProperty(name="execution.isolation.strategy", value="THREAD"),
-                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2500")
+                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="1500")
             })
     public String placeOrder(Model model, @ModelAttribute CustomerApplication.OrderForm orderForm) {
         restTemplate

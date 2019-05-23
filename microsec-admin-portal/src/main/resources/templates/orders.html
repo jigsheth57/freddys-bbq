@@ -11,6 +11,7 @@
   <div class="container">
     <div class="page-header">
       <h1>Current Orders</h1>
+      <a href="/">Back to home</a>
     </div>
     <div class="row" th:each="order : ${orders}">
       <h3>Order number: <span th:text="${order.id}">1</span></h3>

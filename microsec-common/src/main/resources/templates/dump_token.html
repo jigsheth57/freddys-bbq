@@ -3,14 +3,16 @@
 <title>Dump Token</title>
 </head>
 <body>
+  <a href="/">Back to home</a>
   <div th:if="${decodedToken}">
     <p>This is the decoded token</p>
     <pre th:text="${decodedToken}"></pre>
   </div>
   <div>
     <p>This is the raw token</p>
-    <textarea style="width: 40em; height:12em;" th:text="${rawToken}"></textarea>
+    <textarea style="width: 60em; height:18em;" th:text="${rawToken}"></textarea>
     <p>its <b th:text="${rawToken.length()}">0</b> characters long</p>
   </div>
+  <a href="/">Back to home</a>
 </body>
 </html>

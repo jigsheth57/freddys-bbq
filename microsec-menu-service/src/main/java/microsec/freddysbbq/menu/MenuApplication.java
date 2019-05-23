@@ -1,6 +1,6 @@
 package microsec.freddysbbq.menu;
 
-import microsec.common.MenuBootstrap;
+import microsec.common.Menubootstrap;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +39,8 @@ public class MenuApplication {
     private MenuItemRepository menuRepository;
 
     @Bean
-    public MenuBootstrap menuBootstrap() {
-        return new MenuBootstrap();
+    public Menubootstrap menuBootstrap() {
+        return new Menubootstrap();
     }
 
     @PostConstruct

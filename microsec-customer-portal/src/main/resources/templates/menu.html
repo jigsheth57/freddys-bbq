@@ -18,7 +18,8 @@
         <form method="POST" th:action="@{/myorders/}">
           <table class="table table-striped">
             <thead>
-              <tr th:if="!${menuServiceDown}">
+              <!--<tr th:if="!${menuServiceDown}">-->
+              <tr>
                 <th>Item</th>
                 <th>Price</th>
                 <th>Quantity</th>
@@ -27,6 +28,7 @@
             <tbody>
               <tr th:each="item : ${menu}">
                 <td th:text="${item.name}">Something</td>
+                <td th:if="${menuServiceDown}" th:text="Please call">$1.00</td>
                 <td th:if="!${menuServiceDown}" th:text="${item.price}">$1.00</td>
                 <td th:if="!${menuServiceDown}"><input type="text" th:name="|order[${item.id}]|"/></td>
               </tr>
