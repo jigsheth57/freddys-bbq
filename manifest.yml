@@ -8,7 +8,7 @@ bck_service: &bck_service
   # random-route: true
   no-route: true
   env:
-    SSO_IDENTITY_PROVIDERS: uaa
+    SSO_IDENTITY_PROVIDERS: uaa, gcp, jumpcloud
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
@@ -27,7 +27,7 @@ fd_service: &fd_service
     - java_buildpack_offline
   random-route: true
   env:
-    SSO_IDENTITY_PROVIDERS: uaa
+    SSO_IDENTITY_PROVIDERS: uaa, gcp, jumpcloud
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: authorization_code
