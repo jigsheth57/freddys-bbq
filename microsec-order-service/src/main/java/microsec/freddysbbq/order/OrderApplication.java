@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -54,7 +55,9 @@ public class OrderApplication {
                 http
                         .authorizeRequests()
                         .antMatchers("/orders/**").access("#oauth2.hasScope('order.admin')")
-                        .antMatchers("/myorders").access("#oauth2.hasScope('order.me')");
+                        .antMatchers("/myorders").access("#oauth2.hasScope('order.me')")
+                        .antMatchers(HttpMethod.GET, "/manage/**").access("#oauth2.hasScope('admin.read')")
+                        .antMatchers(HttpMethod.POST, "/manage/**").access("#oauth2.hasScope('admin.write')");
             }
         };
     }

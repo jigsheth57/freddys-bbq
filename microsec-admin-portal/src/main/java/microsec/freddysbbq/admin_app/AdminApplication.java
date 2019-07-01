@@ -58,7 +58,11 @@ public class AdminApplication extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .expressionHandler(new OAuth2WebSecurityExpressionHandler())
-                .anyRequest().access("#oauth2.hasScope('menu.write')");
+                .anyRequest().access("#oauth2.hasScope('menu.write')")
+                .antMatchers(HttpMethod.GET, "/manage/**").access("#oauth2.hasScope('admin.read')")
+                .antMatchers(HttpMethod.POST, "/manage/**").access("#oauth2.hasScope('admin.write')");
+        // Customize the application security
+//        http.requiresChannel().anyRequest().requiresSecure();
     }
 
     @Autowired

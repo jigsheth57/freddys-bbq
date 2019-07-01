@@ -58,7 +58,12 @@ public class CustomerApplication extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET, "/manage/**").access("#oauth2.hasScope('admin.read')")
+                .antMatchers(HttpMethod.POST, "/manage/**").access("#oauth2.hasScope('admin.write')");
+        // Customize the application security
+//        http.requiresChannel().anyRequest().requiresSecure();
+
     }
 
     @Autowired

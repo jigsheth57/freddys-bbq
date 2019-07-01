@@ -1,28 +1,26 @@
 ---
 defaults: &defaults
-  buildpack: java_buildpack_offline
+  stack: cflinuxfs3
   memory: 1G
+  buildpacks:
+    - java_buildpack_offline
+  health-check-type: port
+#  random-route: true
+  no-route: true
   env:
-    TRUST_CERTS: api.sys.gcp.pcfapps.org
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
-    GRANT_TYPE: client_credentials
-    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write
-    SSO_RESOURCES: |
-      menu.read:  menu read access
-      menu.write: menu write access
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
-    DEBUG: "true"
-  no-route: true
+    GRANT_TYPE: client_credentials
+    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me,admin.read,admin.write
   services:
-  - sso
-  - service-registry
-  - config-server
-  - event-bus
-  - bckservice-db
+    - sso
+    - service-registry
+    - config-server
+    - event-bus
+    - bckservice-db
 
 applications:
-  - name: menu-service
-    instances: 1
+  - name: menu-service-bbq
     path: target/microsec-menu-service.jar
     <<: *defaults

@@ -16,8 +16,13 @@ uaac group add menu.read
 uaac group add menu.write
 uaac group add order.admin
 uaac group add order.me
+uaac group add admin.read
+uaac group add admin.write
 uaac member add menu.read frank
 uaac member add menu.read freddy
 uaac member add menu.write freddy
 uaac member add order.admin freddy
 uaac member add order.me frank
+uaac member add admin.read freddy
+uaac member add admin.write freddy
+

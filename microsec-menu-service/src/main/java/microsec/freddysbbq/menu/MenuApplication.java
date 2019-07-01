@@ -16,6 +16,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -69,11 +70,17 @@ public class MenuApplication {
             @Override
             public void configure(HttpSecurity http) throws Exception {
                 http
+//                        .requiresChannel()
+//                        .anyRequest()
+//                        .requiresSecure()
+//                        .and()
                         .authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('menu.read')")
                         .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('menu.write')")
                         .antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('menu.write')")
-                        .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('menu.write')");
+                        .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('menu.write')")
+                        .antMatchers(HttpMethod.GET, "/manage/**").access("#oauth2.hasScope('admin.read')")
+                        .antMatchers(HttpMethod.POST, "/manage/**").access("#oauth2.hasScope('admin.write')");
             }
         };
     }

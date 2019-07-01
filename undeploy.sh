@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo y| cf d -r admin-portal
-echo y| cf d -r customer-portal
-echo y| cf d -r order-service
-echo y| cf d -r menu-service
-echo y| cf d -r zipkin
+echo y| cf d -r admin-portal-bbq
+echo y| cf d -r customer-portal-bbq
+echo y| cf d -r order-service-bbq
+echo y| cf d -r menu-service-bbq
+echo y| cf d -r zipkin-bbq
 
 cf ds -f bckservice-db
 cf ds -f circuit-breaker

@@ -5,13 +5,14 @@ bck_service: &bck_service
   buildpacks:
     - java_buildpack_offline
   health-check-type: port
+  # random-route: true
   no-route: true
   env:
     SSO_IDENTITY_PROVIDERS: uaa
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
-    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me
+    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me,admin.read,admin.write
   services:
   - sso
   - service-registry
@@ -30,8 +31,8 @@ fd_service: &fd_service
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: authorization_code
-    SSO_SCOPES: openid,user_attributes,roles,uaa.resource,menu.read,menu.write,order.admin,order.me
-    SSO_AUTO_APPROVED_SCOPES: openid,user_attributes,roles,menu.read,menu.write,order.me,order.admin
+    SSO_SCOPES: openid,user_attributes,roles,uaa.resource,menu.read,menu.write,order.admin,order.me,admin.read,admin.write
+    SSO_AUTO_APPROVED_SCOPES: openid,user_attributes,roles,menu.read,menu.write,order.me,order.admin,admin.read,admin.write
     SSO_SHOW_ON_HOME_PAGE: true
   services:
   - sso
