@@ -5,14 +5,14 @@ defaults: &defaults
   buildpacks:
     - java_buildpack_offline
   health-check-type: port
-  random-route: true
-  # no-route: true
+  # random-route: true
+  no-route: true
   env:
-    SSO_IDENTITY_PROVIDERS: uaa
+    SSO_IDENTITY_PROVIDERS: uaa, jumpcloud
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: client_credentials
-    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me
+    SSO_AUTHORITIES: openid,uaa.resource,menu.read,menu.write,order.admin,order.me,admin.read,admin.write
   services:
     - sso
     - service-registry

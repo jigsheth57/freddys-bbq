@@ -1,23 +1,26 @@
 ---
 defaults: &defaults
-  buildpack: java_buildpack_offline
+  stack: cflinuxfs3
   memory: 1G
+  buildpacks:
+    - java_buildpack_offline
+  random-route: true
   env:
-    TRUST_CERTS: api.sys.gcp.pcfapps.org
-    SSO_IDENTITY_PROVIDERS: uaa
+    SSO_IDENTITY_PROVIDERS: uaa, jumpcloud
     SPRING_PROFILES_ACTIVE: cloud
+    SPRING_RABBITMQ_ADDRESSES: ${vcap.services.event-bus.credentials.uri}
     GRANT_TYPE: authorization_code
-    SSO_SCOPES: openid,menu.read,menu.write,order.admin,order.me
-    SSO_AUTO_APPROVED_SCOPES: openid,menu.read,menu.write,order.admin,order.me
+    SSO_SCOPES: openid,user_attributes,roles,uaa.resource,menu.read,menu.write,order.admin,order.me,admin.read,admin.write
+    SSO_AUTO_APPROVED_SCOPES: openid,user_attributes,roles,menu.read,menu.write,order.me,order.admin,admin.read,admin.write
     SSO_SHOW_ON_HOME_PAGE: true
   services:
-  - sso
-  - service-registry
-  - config-server
-  - event-bus
-  - circuit-breaker
+    - sso
+    - service-registry
+    - config-server
+    - event-bus
+    - circuit-breaker
 
 applications:
-  - name: admin-portal
+  - name: admin-portal-bbq
     path: target/microsec-admin-portal.jar
     <<: *defaults

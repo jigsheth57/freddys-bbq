@@ -62,7 +62,7 @@ public class AdminApplication extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/manage/**").access("#oauth2.hasScope('admin.read')")
                 .antMatchers(HttpMethod.POST, "/manage/**").access("#oauth2.hasScope('admin.write')");
         // Customize the application security
-//        http.requiresChannel().anyRequest().requiresSecure();
+        http.requiresChannel().anyRequest().requiresSecure();
     }
 
     @Autowired

@@ -18,11 +18,15 @@ applications:
       RABBIT_PASSWORD: ${vcap.services.event-bus.credentials.password}
       RABBIT_USE_SSL: false
       HTTP_COLLECTOR_ENABLED: false
+      # STORAGE_TYPE: elasticsearch
+      # ES_HOSTS: https://elasticsearch-lb-895924726.us-east-1.elb.amazonaws.com
+      # ES_USERNAME: elastic
+      # ES_PASSWORD: vw98tfccpn66824sghbkjjjb
       STORAGE_TYPE: mysql
-      MYSQL_HOST: ${vcap.services.zipkin-db.credentials.hostname}
+      MYSQL_HOST: ${vcap.services.zipkin-db.credentials.host}
       MYSQL_USER: ${vcap.services.zipkin-db.credentials.username}
       MYSQL_PASS: ${vcap.services.zipkin-db.credentials.password}
-      MYSQL_DB: ${vcap.services.zipkin-db.credentials.name}
+      MYSQL_DB: ${vcap.services.zipkin-db.credentials.db}
     services:
     - event-bus
     - zipkin-db
